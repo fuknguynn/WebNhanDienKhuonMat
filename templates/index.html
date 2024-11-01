@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hệ thống Điểm danh</title>
+  <style>
+    /* Thêm link để sử dụng font chữ từ Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+    /* Đặt nền và căn chỉnh cho toàn bộ trang */
+    body {
+      background-image: url('static/images/background.jpg'); /* Đường dẫn đến hình ảnh nền */
+      background-size: cover; /* Để hình ảnh phủ đầy toàn bộ trang */
+      background-position: center; /* Căn giữa hình ảnh */
+      background-color: #001e4d;
+      font-family: 'Roboto Mono', monospace; /* Sử dụng font chữ công nghệ */
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Tiêu đề chính */
+    h1 {
+      font-size: 2em;
+      color: #00ccff;
+      margin: 0;
+      text-shadow: 0px 0px 10px rgba(0, 204, 255, 0.7);
+      text-align: center;
+      width: 100%;
+      padding-bottom: 20px;
+    }
+
+    /* Container chính */
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 80%;
+      background-color: rgba(74, 73, 73, 0.71);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+      margin-top: 20px;
+    }
+
+    /* Thông tin sinh viên */
+    .info-section {
+      flex: 1;
+      background-color: #678f99ec;
+      border-radius: 10px;
+      padding: 20px;
+      margin-right: 20px;
+    }
+
+    .info-section h2 {
+      font-size: 1.5em;
+      color: #0d2a5a; 
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .info-section table {
+      width: 100%;
+      color: #0d2a5a;
+    }
+
+    .info-section th,
+    .info-section td {
+      padding: 8px;
+      font-size: 1em;
+    }
+
+    .info-section th {
+      text-align: left;
+      color: #00ccff;
+    }
+
+    /* Footer danh sách sinh viên gần đây */
+    .footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .recent-students {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap; /* Cho phép thẻ card xuống hàng khi không đủ chỗ */
+      justify-content: center; /* Căn giữa các thẻ card */
+    }
+
+    .student-card {
+      display: flex;
+      flex-direction: column; /* Hiển thị theo chiều dọc */
+      background-color: #678f99e2; /* Thêm độ trong suốt cho nền */
+      border-radius: 10px;
+      padding: 10px;
+      width: 240px;
+      height: 190px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+      align-items: center; /* Căn giữa nội dung trong thẻ card */
+      transition: transform 0.3s, box-shadow 0.3s; /* Thêm hiệu ứng chuyển tiếp */
+      opacity: 0.95; /* Đặt độ trong suốt cho card */
+    }
+
+    .student-card:hover {
+      transform: scale(1.10); /* Phóng to card một chút */
+      box-shadow: 0px 0px 15px rgba(0, 204, 255, 0.7); /* Thay đổi bóng đổ khi hover */
+    }
+
+    .student-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      margin-bottom: 10px; /* Khoảng cách giữa hình ảnh và thông tin */
+    }
+
+    .student-info {
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      color: #0d2a5a;
+      font-size: 0.9em;
+      text-align: center; /* Căn giữa văn bản trong thông tin sinh viên */
+    }
+
+    .student-info p {
+      margin: 2px 0;
+    }
+  </style>
+</head>
+<body>
+  <img src="/static/images/logo.png" alt="Logo" />
+  <div class="container">
+    <div class="info-section" id="info-section">
+      <h2>Thông tin sinh viên</h2>
+      <table>
+        <tr>
+          <td>MSSV:</td>
+          <td id="mssv">-</td>
+        </tr>
+        <tr>
+          <td>Họ và tên:</td>
+          <td id="hoten">-</td>
+        </tr>
+        <tr>
+          <td>Lớp:</td>
+          <td id="lop">-</td>
+        </tr>
+        <tr>
+          <td>Check-in:</td>
+          <td id="tgcheckin">-</td>
+        </tr>
+        <tr>
+          <td>Check-out:</td>
+          <td id="tgcheckout">-</td>
+        </tr>
+      </table>
+    </div>
+    <div class="image-section">
+      <br> <br>
+      <img id="checkin-image" src="" alt="Hình ảnh check-in" width="200" />
+    </div>
+  </div>
+  <!-- Footer danh sách sinh viên gần đây -->
+  <div class="footer">
+    <div class="recent-students" id="recent-students">
+      <!-- Các sinh viên gần đây sẽ được thêm vào đây -->
+    </div>
+  </div>
+  <script>
+    const infoSection = document.getElementById('info-section');
+    const recentStudentsContainer = document.getElementById('recent-students');
+
+    // Hiển thị thông tin sinh viên vừa điểm danh
+    const latestCheckedInStudent = JSON.parse('{{ student_data | tojson | safe }}');
+    if (latestCheckedInStudent) {
+      document.getElementById('mssv').textContent = latestCheckedInStudent.mssv || '-';
+      document.getElementById('hoten').textContent = latestCheckedInStudent.hoten || '-';
+      document.getElementById('lop').textContent = latestCheckedInStudent.lop || '-';
+      document.getElementById('tgcheckin').textContent = latestCheckedInStudent.tgiancheck_in || '-';
+      document.getElementById('tgcheckout').textContent = latestCheckedInStudent.tgiancheck_out || '-';
+
+      // Load ảnh check-in
+      const mssv = latestCheckedInStudent.mssv;
+      const imageSrc = `/static/dataset/${mssv}/${mssv}_10.jpg`; // Tạo đường dẫn
+
+      document.getElementById('checkin-image').src = imageSrc; // Gán src cho hình ảnh
+    } else {
+      infoSection.innerHTML = '<h2>Không có sinh viên nào điểm danh</h2>';
+    }
+
+    // Hiển thị danh sách 6 sinh viên gần nhất
+    const recentStudents = JSON.parse('{{ recent_students | tojson | safe }}');
+    if (recentStudents && recentStudents.length > 0) {
+      // Lọc ra sinh viên vừa điểm danh để không hiển thị trong danh sách
+      const filteredStudents = recentStudents.filter(student => student.mssv !== latestCheckedInStudent?.mssv);
+      
+      filteredStudents.forEach(student => {
+        const studentCard = document.createElement('div');
+        studentCard.className = 'student-card';
+
+        const studentImage = document.createElement('img');
+        const mssv = student.mssv;
+        // Tạo đường dẫn file ảnh bằng JavaScript
+        const imageSrc = `/static/dataset/${mssv}/${mssv}_10.jpg`;
+        studentImage.src = imageSrc;
+        studentImage.alt = 'Hình ảnh sinh viên';
+
+        const studentInfo = document.createElement('div');
+        studentInfo.className = 'student-info';
+        studentInfo.innerHTML = `
+              <p><strong>${student.hoten}</strong></p>
+              <p>MSSV: ${student.mssv}</p>
+              <p>Lớp: ${student.lop}</p>
+              <p>Trạng thái: ${student.trangthai}</p>
+          `;
+
+        studentCard.appendChild(studentImage);
+        studentCard.appendChild(studentInfo);
+        recentStudentsContainer.appendChild(studentCard);
+      });
+    }
+  </script>
+</body>
+</html>
